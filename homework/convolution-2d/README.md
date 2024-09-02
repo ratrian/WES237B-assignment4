@@ -2,9 +2,9 @@
 ![Convolution](https://docs-cse160.readthedocs.io/en/latest/_images/2D_Convolution_Animation.gif "Convolution")
 
 ## Objective
-The lab’s objective is to implement a tiled image convolution using both shared and constant memory. We will have a constant $5 \times 5$ convolution mask, but will have arbitrarily sized image (assume the image dimensions are greater than $5 \times 5$ for this Lab).
+The lab’s objective is to implement a tiled image convolution using both shared and constant memory. We will have a constant $5 \times 5$ convolution mask, but will have arbitrarily sized image (assume that image dimensions are greater than $5 \times 5$ for this PA).
 
-To use the constant memory for the convolution mask, you can first transfer the mask data to the device. Consider the case where the pointer to the device array for the mask is named $M$. You can use `__constant float * M` as one of the parameters during your kernel launch. This informs the compiler that the contents of the mask array are constants and will only be accessed through pointer variable `M`. This will enable the compiler to place the data into constant memory and allow the SM hardware to aggressively cache the mask data at runtime.
+To use constant memory for the convolution mask, you can first transfer the mask data to the device. Consider the case where the pointer to the device array for the mask is named $M$. You can use `__constant float * M` as one of the parameters during your kernel launch. This informs the compiler that the contents of the mask array are constants and will only be accessed through pointer variable `M`. This will enable the compiler to place the data into constant memory and allow the SM hardware to aggressively cache the mask data at runtime.
 
 Convolution is used in many fields, such as image processing for image filtering. A standard image convolution formula for a $5 \times 5$ convolution filter $M$ with an Image $I$ is:
 

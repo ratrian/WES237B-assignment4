@@ -1,4 +1,3 @@
-
 __kernel void convolution2D(
     __global float * inputData, __global float * outputData, __constant float * maskData,
     int width, int height, int maskWidth,  int imageChannels){
