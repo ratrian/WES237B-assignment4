@@ -56,16 +56,15 @@ for i from 0 to height do
                 for x from -maskRadius to maskRadius do
                     xOffset := j + x
                     yOffset := i + y
-                    if xOffset >= 0 && xOffset < width &&
-                        yOffset >= 0 && yOffset < height then
+                    if xOffset >= 0 && xOffset < width && yOffset >= 0 && yOffset < height then
                         imagePixel := I[(yOffset * width + xOffset) * channels + k]
-                        maskValue := K[(y+maskRadius)*maskWidth+x+maskRadius]
+                        maskValue := K[(y + maskRadius) * maskWidth + (x + maskRadius)]
                         accum += imagePixel * maskValue
                     end
                 end
             end
             # pixels are in the range of 0 to 1
-            P[(i * width + j)*channels + k] = clamp(accum, 0, 1)
+            P[(i * width + j) * channels + k] = clamp(accum, 0, 1)
         end
     end
 end
