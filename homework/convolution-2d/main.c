@@ -63,12 +63,12 @@ void OpenCLConvolution2D(Matrix *input0, Matrix *input1, Matrix *result)
 
     //@@ Allocate GPU memory here
     device_a = clCreateBuffer(context, CL_MEM_WRITE_ONLY, sizeof(float)*input0->shape[0]*input0->shape[1]*IMAGE_CHANNELS, NULL, &err);
-    device_c = clCreateBuffer(context, CL_MEM_WRITE_ONLY, sizeof(float)*input1->shape[0]*input1->shape[1], NULL, &err);
-    device_b = clCreateBuffer(context, CL_MEM_WRITE_ONLY, sizeof(float)*result->shape[0]*result->shape[1]*IMAGE_CHANNELS, NULL, &err);
+    device_b = clCreateBuffer(context, CL_MEM_WRITE_ONLY, sizeof(float)*input1->shape[0]*input1->shape[1], NULL, &err);
+    device_c = clCreateBuffer(context, CL_MEM_WRITE_ONLY, sizeof(float)*result->shape[0]*result->shape[1]*IMAGE_CHANNELS, NULL, &err);
 
     //@@ Copy memory to the GPU here
     clEnqueueWriteBuffer(queue, device_a, CL_TRUE, 0, sizeof(float)*input0->shape[0]*input0->shape[1]*IMAGE_CHANNELS, input0->data, 0, NULL, NULL);
-    clEnqueueWriteBuffer(queue, device_c, CL_TRUE, 0, sizeof(float)*input1->shape[0]*input1->shape[1], input1->data, 0, NULL, NULL);
+    clEnqueueWriteBuffer(queue, device_b, CL_TRUE, 0, sizeof(float)*input1->shape[0]*input1->shape[1], input1->data, 0, NULL, NULL);
 
     // Set the arguments to our compute kernel
     // __global float * inputData, __global float * outputData, __constant float * maskData,
@@ -98,7 +98,7 @@ void OpenCLConvolution2D(Matrix *input0, Matrix *input1, Matrix *result)
     clFinish(queue);
 
     //@@ Copy the GPU memory back to the CPU here
-    clEnqueueReadBuffer(queue, device_b, CL_TRUE, 0, sizeof(float)*result->shape[0]*result->shape[1]*IMAGE_CHANNELS, result->data, 0, NULL, NULL);
+    clEnqueueReadBuffer(queue, device_c, CL_TRUE, 0, sizeof(float)*result->shape[0]*result->shape[1]*IMAGE_CHANNELS, result->data, 0, NULL, NULL);
 
     //@@ Free the GPU memory here
     clReleaseMemObject(device_a);
