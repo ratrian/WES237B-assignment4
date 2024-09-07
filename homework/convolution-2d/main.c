@@ -90,7 +90,7 @@ void OpenCLConvolution2D(Matrix *input0, Matrix *input1, Matrix *result)
     CHECK_ERR(err, "clSetKernelArg 6");
 
     // @@ define local and global work sizes
-    size_t global_item_size[2] = {result->shape[0]/IMAGE_CHANNELS, result->shape[1]/IMAGE_CHANNELS};
+    size_t global_item_size[2] = {result->shape[0], result->shape[1]};
     size_t local_item_size[2] = {1, 1};
 
     //@@ Launch the GPU Kernel here
