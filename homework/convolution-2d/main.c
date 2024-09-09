@@ -14,6 +14,7 @@
     }
 
 #define KERNEL_PATH "kernel.cl"
+#define TILE_SIZE 16
 
 void OpenCLConvolution2D(Matrix *input0, Matrix *input1, Matrix *result)
 {
@@ -90,8 +91,10 @@ void OpenCLConvolution2D(Matrix *input0, Matrix *input1, Matrix *result)
     CHECK_ERR(err, "clSetKernelArg 6");
 
     // @@ define local and global work sizes
-    size_t global_item_size[2] = {result->shape[0], result->shape[1]};
-    size_t local_item_size[2] = {1, 1};
+    size_t global_item_size[2];
+    global_item_size[0] = ((result->shape[0] % TILE_SIZE) == 0) ? result->shape[0] : (((result->shape[0] / TILE_SIZE) + 1) * TILE_SIZE);
+    global_item_size[1] = ((result->shape[1] % TILE_SIZE) == 0) ? result->shape[1] : (((result->shape[1] / TILE_SIZE) + 1) * TILE_SIZE);
+    size_t local_item_size[2] = {TILE_SIZE, TILE_SIZE};
 
     //@@ Launch the GPU Kernel here
     err = clEnqueueNDRangeKernel(queue, kernel, 2, NULL, &global_item_size, &local_item_size, 0, NULL, NULL);
